@@ -1,84 +1,61 @@
 // Author: Wilfredo Fernandez
 
-// Define constant variables
-const CLIENT_ID = 'ee4696b8-16c4-40ce-87ae-7322597880ac';
-const ENVIRONMENT = 'mypurecloud.de';
-
-// Select HTML elements
+const clientId = "418fb399-bb7d-431c-882f-69dc24f730b9";
+const environment = 'mypurecloud.de';
 const form = document.querySelector("#login");
-const phoneInput = document.querySelector("#phone");
 const info = document.querySelector(".alert");
+const secret = document.querySelector("#secret");
+const emailInput = document.querySelector("#email");
+const phoneInput = document.querySelector("#phone");
+const queueInput = document.querySelector("#queue");
+const params = new URLSearchParams();
+params.append('grant_type', 'client_credentials');
+var clientSecret ='';
 
-// Attach event listener to form submit
-form.addEventListener("submit", process);
-
-/**
- * Extracts the value of a URL parameter by name
- * @param {string} name - The name of the parameter
- * @returns {string} - The value of the parameter or an empty string if not found
- */
-function getParameterByName(name) {
-  name = name.replace(/[\\[]/, "\\[").replace(/[\]]/, "\\]");
-  const regex = new RegExp("[\\#&]" + name + "=([^&#]*)");
-  const results = regex.exec(location.hash);
-  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+function message(text) {
+  info.innerHTML = text;
 }
 
-/**
- * Handles the form submission event
- * @param {Event} event - The form submission event
- */
+// Test token by getting role definitions in the organization.
+function handleTokenCallback(body){
+    return fetch(`https://api.${environment}/api/v2/authorization/roles`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${body.token_type} ${body.access_token}`
+        }
+    })
+    .then(res => {
+        if(res.ok){
+            return res.json();
+        } else {
+            throw Error(res.statusText);
+        }
+    })
+    .then(jsonResponse => {
+        console.log(jsonResponse);
+    })
+    .catch(e => console.error(e));
+}
+
 function process(event) {
   event.preventDefault();
-  const phoneNumber = phoneInput.value;
-  const queue = '07b54d9e-b08b-4587-a4bd-7e0055ebed0b';
-  info.innerHTML = `Placing call to Phone number in E.164 format: <strong>${phoneNumber}</strong>`;
-  placeCall(phoneNumber, queue);
-}
-
-/**
- * Places a call using AJAX
- * @param {string} phone - The phone number
- * @param {string} queue - The queue ID
- */
-function placeCall(phone, queue) {
-  const token = getParameterByName('access_token');
-  $.ajax({
-    url: `https://api.${ENVIRONMENT}/api/v2/conversations/calls`,
-    type: "post",
-    data: JSON.stringify({
-      "phoneNumber": phone,
-      "callFromQueueId": queue
-    }),
-    contentType: "application/json; charset=utf-8",
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('Authorization', 'bearer ' + token);
+// Genesys Cloud Authentication
+clientSecret = secretInput.value;
+fetch(`https://login.${environment}/oauth/token`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${Buffer.from(clientId + ':' + clientSecret).toString('base64')}`
     },
-    success: function(data) {
-      console.log(data);
+    body: params
+})
+.then(res => {
+    if(res.ok){
+        return message(res.json());
+    } else {
+        throw Error(res.statusText);
     }
-  });
-}
-
-// Check if there is a hash in the URL
-if (window.location.hash) {
-  const token = getParameterByName('access_token');
-  console.log("token" + token);
-  $.ajax({
-    url: `https://api.${ENVIRONMENT}/api/v2/users/me`,
-    type: "GET",
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('Authorization', 'bearer ' + token);
-    },
-    success: function(data) {
-      console.log(data);
-    }
-  });
-} else {
-  const queryStringData = {
-    response_type: "token",
-    client_id: CLIENT_ID,
-    redirect_uri: "https://wilrey.github.io/placeCall/index.html"
-  };
-  window.location.replace(`https://login.${ENVIRONMENT}/oauth/authorize?` + jQuery.param(queryStringData));
+})
+.catch(e => console.error(e));
 }
