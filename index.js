@@ -27,9 +27,10 @@ var encodedData = window.btoa(clientId + ':' + clientSecret);
   $.ajax({
     url: `https://login.${ENVIRONMENT}/oauth/token`,
     type: "post",
-    data: {"grant_type": client_credentials},
+    data: {"grant_type": "client_credentials"},
+    contentType: "application/x-www-form-urlencoded",
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Basic ' + encodedData);
+      xhr.setRequestHeader('Authorization', 'Basic ' + encodedData);
     },
     success: function(data) {
       console.log(data);
