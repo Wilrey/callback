@@ -9,8 +9,9 @@ const emailInput = document.querySelector("#email");
 const phoneInput = document.querySelector("#phone");
 const queueInput = document.querySelector("#queue");
 const params = new URLSearchParams();
-params.append('grant_type', 'client_credentials');
 var clientSecret ='';
+form.addEventListener("submit", process);
+params.append('grant_type', 'client_credentials');
 
 function message(text) {
   info.innerHTML = text;
