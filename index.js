@@ -1,7 +1,5 @@
 // Author: Wilfredo Fernandez
 
-// Make sure to enable "Placing calls with another app?" on Call -> Settings -> Phone Settings
-
 // Define constant variables
 const CLIENT_ID = 'ee4696b8-16c4-40ce-87ae-7322597880ac';
 const ENVIRONMENT = 'mypurecloud.de';
