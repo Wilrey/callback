@@ -1,7 +1,7 @@
 // Author: Wilfredo Fernandez
 
 const clientId = "418fb399-bb7d-431c-882f-69dc24f730b9";
-const environment = 'mypurecloud.de';
+const ENVIRONMENT = 'mypurecloud.de';
 const form = document.querySelector("#login");
 const info = document.querySelector(".alert");
 const secretInput = document.querySelector("#secret");
@@ -24,21 +24,15 @@ clientSecret = secretInput.value;
 console.log("Client Secret : " + clientSecret);
 var encodedData = window.btoa(clientId + ':' + clientSecret);
   
-fetch(`https://login.${environment}/oauth/token`, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + encodedData
+  $.ajax({
+    url: `https://login.${ENVIRONMENT}/oauth/token`,
+    type: "post",
+    data: {"grant_type": client_credentials},
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Basic ' + encodedData);
     },
-    body: params
-})
-.then(res => {
-  console.log("Res : " + res);
-    if(res.ok){
-        return message(res.json());
-    } else {
-        throw Error(res.statusText);
+    success: function(data) {
+      console.log(data);
     }
-})
-.catch(e => console.error(e));
+  })
 }
