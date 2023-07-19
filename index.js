@@ -18,15 +18,17 @@ function message(text) {
 }
 
 function process(event) {
-  event.preventDefault();
+event.preventDefault();
 // Genesys Cloud Authentication
 clientSecret = secretInput.value;
 console.log("Client Secret : " + clientSecret);
+var encodedData = window.btoa(clientId + ':' + clientSecret);
+  
 fetch(`https://login.${environment}/oauth/token`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${Buffer.from(clientId + ':' + clientSecret).toString('base64')}`
+        'Authorization': 'Basic ' + encodedData
     },
     body: params
 })
