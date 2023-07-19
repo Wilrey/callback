@@ -16,32 +16,11 @@ function message(text) {
   info.innerHTML = text;
 }
 
-// Test token by getting role definitions in the organization.
-function handleTokenCallback(body){
-    return fetch(`https://api.${environment}/api/v2/authorization/roles`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${body.token_type} ${body.access_token}`
-        }
-    })
-    .then(res => {
-        if(res.ok){
-            return res.json();
-        } else {
-            throw Error(res.statusText);
-        }
-    })
-    .then(jsonResponse => {
-        console.log(jsonResponse);
-    })
-    .catch(e => console.error(e));
-}
-
 function process(event) {
   event.preventDefault();
 // Genesys Cloud Authentication
 clientSecret = secretInput.value;
+console.log("Client Secret : " + clientSecret);
 fetch(`https://login.${environment}/oauth/token`, {
     method: 'POST',
     headers: {
@@ -51,6 +30,7 @@ fetch(`https://login.${environment}/oauth/token`, {
     body: params
 })
 .then(res => {
+  console.log("Res : " + res);
     if(res.ok){
         return message(res.json());
     } else {
