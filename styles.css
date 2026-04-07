@@ -3,11 +3,28 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  text-align: center;
+  font-family: Arial;
 }
 
 .container {
   background-color: #f2f2f2;
   padding: 20px;
   border-radius: 5px;
+  width: 300px;
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px;
+  width: 100%;
+}
+
+.alert {
+  margin-top: 10px;
 }
