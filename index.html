@@ -1,73 +1,17 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Genesys Cloud - External Tag</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <title>Set External Tag</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="container">
-    <h1>Actualizar externalTag</h1>
-    <p class="subtitle">Genesys Cloud Public API con OAuth Code Authorization / PKCE</p>
-
-    <section class="card config-card">
-      <h2>Configuración</h2>
-      <div class="grid two-columns">
-        <label>
-          Región
-          <input id="region" type="text" value="mypurecloud.ie" />
-        </label>
-
-        <label>
-          Client ID
-          <input id="clientId" type="text" value="f6408f25-89c1-427d-ba0f-c2d74922366f" />
-        </label>
-
-        <label class="full-width">
-          Redirect URI
-          <input id="redirectUri" type="text" />
-        </label>
-
-        <label class="full-width">
-          OAuth scopes
-          <input id="scopes" type="text" value="conversations" />
-        </label>
-      </div>
-
-      <div class="actions">
-        <button id="loginButton" type="button">Autorizar con PKCE</button>
-        <button id="clearSessionButton" type="button" class="secondary">Limpiar sesión</button>
-      </div>
-    </section>
-
-    <section class="card form-card">
-      <h2>Actualizar tag</h2>
-      <form id="tagForm">
-        <div class="grid">
-          <label>
-            Conversation ID
-            <input id="conversationId" type="text" placeholder="74c490e1-4124-479e-b7cf-a7188fa3d96b" required />
-          </label>
-
-          <label>
-            External Tag
-            <input id="externalTag" type="text" placeholder="REQ26145825154" required />
-          </label>
-        </div>
-
-        <div class="actions">
-          <button id="saveButton" type="submit">Guardar externalTag</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="card">
-      <h2>Estado</h2>
-      <div id="status" class="status info">Esperando autenticación.</div>
-      <pre id="output" class="output"></pre>
-    </section>
-  </main>
+  <div class="container">
+    <input id="conversationId" type="text" placeholder="conversationId">
+    <input id="externalTag" type="text" placeholder="externalTag">
+    <button id="runBtn">Ejecutar</button>
+    <div id="status"></div>
+  </div>
 
   <script src="index.js"></script>
 </body>
